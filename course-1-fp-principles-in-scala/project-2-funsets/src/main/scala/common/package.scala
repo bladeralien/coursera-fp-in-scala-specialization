@@ -1,4 +1,3 @@
-
 import java.io.File
 
 package object common {
@@ -12,7 +11,6 @@ package object common {
    *  Denotes that the type should be filled in.
    */
   type *** = Any
-
 
   /**
    * Get a child of a file. For example,
@@ -38,4 +36,5 @@ package object common {
     else
       None
   }
+
 }
