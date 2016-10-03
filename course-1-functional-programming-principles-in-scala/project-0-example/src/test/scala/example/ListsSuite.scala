@@ -125,5 +125,4 @@ class ListsSuite extends FunSuite {
       max(List())
     }
   }
-
 }
