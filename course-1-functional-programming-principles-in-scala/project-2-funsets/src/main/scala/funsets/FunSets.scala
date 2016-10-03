@@ -100,5 +100,4 @@ object FunSets {
   def printSet(s: Set) {
     println(toString(s))
   }
-
 }

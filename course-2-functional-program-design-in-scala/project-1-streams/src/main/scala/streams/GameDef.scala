@@ -1,7 +1,5 @@
 package streams
 
-import common._
-
 /**
  * This trait represents the layout and building blocks of the game
  *
@@ -63,29 +61,26 @@ trait GameDef {
    */
   type Terrain = Pos => Boolean
 
-
   /**
    * The terrain of this game. This value is left abstract.
    */
   val terrain: Terrain
-
 
   /**
    * In Bloxorz, we can move left, right, Up or down.
    * These moves are encoded as case objects.
    */
   sealed abstract class Move
-  case object Left  extends Move
+  case object Left extends Move
   case object Right extends Move
-  case object Up    extends Move
-  case object Down  extends Move
+  case object Up extends Move
+  case object Down extends Move
 
   /**
    * This function returns the block at the start position of
    * the game.
    */
-  def startBlock: Block = ???
-
+  def startBlock: Block = Block(startPos, startPos)
 
   /**
    * A block is represented by the position of the two cubes that
@@ -109,7 +104,6 @@ trait GameDef {
      */
     def dy(d1: Int, d2: Int) = Block(b1.dy(d1), b2.dy(d2))
 
-
     /** The block obtained by moving left */
     def left = if (isStanding)         dy(-2, -1)
                else if (b1.x == b2.x)  dy(-1, -2)
@@ -130,27 +124,26 @@ trait GameDef {
                else if (b1.x == b2.x)  dx(1, 1)
                else                    dx(2, 1)
 
-
     /**
      * Returns the list of blocks that can be obtained by moving
      * the current block, together with the corresponding move.
      */
-    def neighbors: List[(Block, Move)] = ???
+    def neighbors: List[(Block, Move)] = List((left, Left), (right, Right), (up, Up), (down, Down))
 
     /**
      * Returns the list of positions reachable from the current block
      * which are inside the terrain.
      */
-    def legalNeighbors: List[(Block, Move)] = ???
+    def legalNeighbors: List[(Block, Move)] = for ((block, move) <- neighbors if block.isLegal) yield (block, move)
 
     /**
      * Returns `true` if the block is standing.
      */
-    def isStanding: Boolean = ???
+    def isStanding: Boolean = b1.x == b2.x && b1.y == b2.y
 
     /**
      * Returns `true` if the block is entirely inside the terrain.
      */
-    def isLegal: Boolean = ???
+    def isLegal: Boolean = terrain(b1) && terrain(b2)
   }
 }
