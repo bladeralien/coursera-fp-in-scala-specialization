@@ -1,11 +1,8 @@
 package scalashop
 
-import java.util.concurrent._
-import scala.collection._
-import org.scalatest.FunSuite
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import common._
 
 @RunWith(classOf[JUnitRunner])
 class BlurSuite extends FunSuite {
@@ -88,6 +85,4 @@ class BlurSuite extends FunSuite {
     check(2, 2, 5)
     check(3, 2, 6)
   }
-
-
 }

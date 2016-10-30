@@ -2,6 +2,7 @@ package scalashop
 
 import org.scalameter._
 import common._
+import scala.math.max
 
 object VerticalBoxBlurRunner {
 
@@ -30,7 +31,6 @@ object VerticalBoxBlurRunner {
     println(s"fork/join blur time: $partime ms")
     println(s"speedup: ${seqtime / partime}")
   }
-
 }
 
 /** A simple, trivially parallelizable computation. */
@@ -44,7 +44,15 @@ object VerticalBoxBlur {
    */
   def blur(src: Img, dst: Img, from: Int, end: Int, radius: Int): Unit = {
     // TODO implement this method using the `boxBlurKernel` method
-    ???
+    var x = from
+    while (x < end) {
+      var y = 0
+      while (y < src.height) {
+        dst.update(x, y, boxBlurKernel(src, x, y, radius))
+        y += 1
+      }
+      x += 1
+    }
   }
 
   /** Blurs the columns of the source image in parallel using `numTasks` tasks.
@@ -55,7 +63,9 @@ object VerticalBoxBlur {
    */
   def parBlur(src: Img, dst: Img, numTasks: Int, radius: Int): Unit = {
     // TODO implement using the `task` construct and the `blur` method
-    ???
+    val points = 0 to src.width by max(src.width / numTasks, 1)
+    val strips = points.take(points.length - 1).zip(points.tail)
+    val tasks = strips.map((strip) => task {blur(src, dst, strip._1, strip._2, radius)})
+    tasks.foreach((task) => task.join())
   }
-
 }

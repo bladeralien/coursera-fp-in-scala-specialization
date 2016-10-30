@@ -125,7 +125,6 @@ object ScalaShop {
     def getFilterName: String = {
       filterCombo.getSelectedItem.asInstanceOf[String]
     }
-
   }
 
   try {
@@ -139,5 +138,4 @@ object ScalaShop {
   def main(args: Array[String]) {
     frame.repaint()
   }
-
 }

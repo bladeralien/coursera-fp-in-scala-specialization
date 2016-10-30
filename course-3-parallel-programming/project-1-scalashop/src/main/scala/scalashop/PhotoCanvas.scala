@@ -82,5 +82,4 @@ class PhotoCanvas extends JComponent {
 
     gcan.drawImage(bufferedImage, 0, 0, null)
   }
-
 }

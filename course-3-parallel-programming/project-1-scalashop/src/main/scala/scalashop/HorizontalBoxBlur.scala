@@ -2,6 +2,7 @@ package scalashop
 
 import org.scalameter._
 import common._
+import scala.math.max
 
 object HorizontalBoxBlurRunner {
 
@@ -32,7 +33,6 @@ object HorizontalBoxBlurRunner {
   }
 }
 
-
 /** A simple, trivially parallelizable computation. */
 object HorizontalBoxBlur {
 
@@ -42,9 +42,16 @@ object HorizontalBoxBlur {
    *  Within each row, `blur` traverses the pixels by going from left to right.
    */
   def blur(src: Img, dst: Img, from: Int, end: Int, radius: Int): Unit = {
-  // TODO implement this method using the `boxBlurKernel` method
-
-  ???
+    // TODO implement this method using the `boxBlurKernel` method
+    var y = from
+    while (y < end) {
+      var x = 0
+      while (x < src.width) {
+        dst.update(x, y, boxBlurKernel(src, x, y, radius))
+        x += 1
+      }
+      y += 1
+    }
   }
 
   /** Blurs the rows of the source image in parallel using `numTasks` tasks.
@@ -54,9 +61,10 @@ object HorizontalBoxBlur {
    *  rows.
    */
   def parBlur(src: Img, dst: Img, numTasks: Int, radius: Int): Unit = {
-  // TODO implement using the `task` construct and the `blur` method
-
-  ???
+    // TODO implement using the `task` construct and the `blur` method
+    val points = 0 to src.height by max(src.height / numTasks, 1)
+    val strips = points.take(points.length - 1).zip(points.tail)
+    val tasks = strips.map((strip) => task {blur(src, dst, strip._1, strip._2, radius)})
+    tasks.foreach((task) => task.join())
   }
-
 }
