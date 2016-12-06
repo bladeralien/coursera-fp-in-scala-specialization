@@ -1,8 +1,7 @@
 package reductions
 
-import scala.annotation._
-import org.scalameter._
 import common._
+import org.scalameter._
 
 object ParallelParenthesesBalancingRunner {
 
@@ -41,25 +40,61 @@ object ParallelParenthesesBalancing {
   /** Returns `true` iff the parentheses in the input `chars` are balanced.
    */
   def balance(chars: Array[Char]): Boolean = {
-    ???
+    var count = 0
+    for (char: Char <- chars) {
+      if (char.equals('(')) count += 1
+      else if (char.equals(')')) count -= 1
+      if (count < 0) return false
+    }
+    if (count != 0) false
+    else true
+    // TODO GC detected.
+    // def helper(chars: Array[Char], count: Int): Boolean = {
+    //   if (chars.isEmpty) {
+    //     if (count != 0) false
+    //     else true
+    //   } else {
+    //     if (count < 0) false
+    //     else {
+    //       if (chars.head.equals('(')) helper(chars.tail, count + 1)
+    //       else if (chars.head.equals(')')) helper(chars.tail, count - 1)
+    //       else helper(chars.tail, count)
+    //     }
+    //   }
+    // }
+    // helper(chars, 0)
   }
 
   /** Returns `true` iff the parentheses in the input `chars` are balanced.
    */
   def parBalance(chars: Array[Char], threshold: Int): Boolean = {
 
-    def traverse(idx: Int, until: Int, arg1: Int, arg2: Int) /*: ???*/ = {
-      ???
+    def traverse(idx: Int, until: Int, arg1: Int, arg2: Int): (Int, Int) = {
+      if (idx >= until) {
+        (arg1, arg2)
+      } else {
+        if (chars(idx).equals('(')) traverse(idx + 1, until, arg1 + 1, arg2)
+        else if (chars(idx).equals(')')) {
+          if (arg1 > 0) traverse(idx + 1, until, arg1 - 1, arg2)
+          else traverse(idx + 1, until, arg1, arg2 + 1)
+        }
+        else traverse(idx + 1, until, arg1, arg2)
+      }
     }
 
-    def reduce(from: Int, until: Int) /*: ???*/ = {
-      ???
+    def reduce(from: Int, until: Int): (Int, Int) = {
+      if (until - from <= threshold) traverse(from, until, 0, 0)
+      else {
+        val middle = (from + until) / 2
+        val (t1, t2) = parallel(reduce(from, middle), reduce(middle, until))
+        if (t2._2 >= t1._1) (t2._1, t2._2 - t1._1 + t1._2)
+        else (t1._1 - t2._2 + t2._1, t1._2)
+      }
     }
 
-    reduce(0, chars.length) == ???
+    reduce(0, chars.length) == (0, 0)
   }
 
   // For those who want more:
   // Prove that your reduction operator is associative!
-
 }

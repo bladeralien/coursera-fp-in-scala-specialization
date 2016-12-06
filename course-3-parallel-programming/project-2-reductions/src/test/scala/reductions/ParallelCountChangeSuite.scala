@@ -1,13 +1,9 @@
 package reductions
 
-import java.util.concurrent._
-import scala.collection._
-import org.scalatest.FunSuite
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import common._
-
-import ParallelCountChange._
+import reductions.ParallelCountChange._
 
 @RunWith(classOf[JUnitRunner])
 class ParallelCountChangeSuite extends FunSuite {
@@ -62,6 +58,4 @@ class ParallelCountChangeSuite extends FunSuite {
     check(50, List(1, 2, 5, 10), 341)
     check(250, List(1, 2, 5, 10, 20, 50), 177863)
   }
-
-
 }
