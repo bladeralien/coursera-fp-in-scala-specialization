@@ -4,10 +4,8 @@ import scala.annotation.tailrec
 import scala.collection._
 import scala.util.Random
 import org.scalameter._
-import common._
 
 class KMeans {
-
   def generatePoints(k: Int, num: Int): Seq[Point] = {
     val randx = new Random(1)
     val randy = new Random(3)
@@ -43,10 +41,13 @@ class KMeans {
   }
 
   def classify(points: GenSeq[Point], means: GenSeq[Point]): GenMap[Point, GenSeq[Point]] = {
-    ???
+    val clusters = points.groupBy((point: Point) => findClosest(point, means))
+    means.map({
+      mean => if (!clusters.contains(mean)) mean -> GenSeq() else mean -> clusters(mean)
+    }).toMap
   }
 
-  def findAverage(oldMean: Point, points: GenSeq[Point]): Point = if (points.length == 0) oldMean else {
+  def findAverage(oldMean: Point, points: GenSeq[Point]): Point = if (points.isEmpty) oldMean else {
     var x = 0.0
     var y = 0.0
     var z = 0.0
@@ -59,16 +60,22 @@ class KMeans {
   }
 
   def update(classified: GenMap[Point, GenSeq[Point]], oldMeans: GenSeq[Point]): GenSeq[Point] = {
-    ???
+    oldMeans.map((oldMean: Point) => findAverage(oldMean, classified(oldMean)))
   }
 
   def converged(eta: Double)(oldMeans: GenSeq[Point], newMeans: GenSeq[Point]): Boolean = {
-    ???
+    if (newMeans.isEmpty) true
+    else (0 until newMeans.length).map({
+      i => newMeans(i).squareDistance(oldMeans(i)) <= eta
+    }).reduce(_ && _)
   }
 
   @tailrec
   final def kMeans(points: GenSeq[Point], means: GenSeq[Point], eta: Double): GenSeq[Point] = {
-    if (???) kMeans(???, ???, ???) else ??? // your implementation need to be tail recursive
+    val newMeans = update(classify(points, means), means)
+    if (!converged(eta)(means, newMeans))
+      kMeans(points, newMeans, eta)
+    else newMeans // your implementation need to be tail recursive
   }
 }
 
@@ -85,9 +92,7 @@ class Point(val x: Double, val y: Double, val z: Double) {
   override def toString = s"(${round(x)}, ${round(y)}, ${round(z)})"
 }
 
-
 object KMeansRunner {
-
   val standardConfig = config(
     Key.exec.minWarmupRuns -> 20,
     Key.exec.maxWarmupRuns -> 40,
@@ -117,5 +122,4 @@ object KMeansRunner {
     println(s"parallel time: $partime ms")
     println(s"speedup: ${seqtime / partime}")
   }
-
 }

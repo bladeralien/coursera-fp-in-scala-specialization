@@ -7,11 +7,8 @@ import java.awt.image._
 import java.io._
 import javax.imageio._
 import javax.swing._
-import javax.swing.event._
-import common._
 
 class PhotoCanvas extends JComponent {
-
   var imagePath: Option[String] = None
 
   var image = loadEPFLImage()
@@ -92,5 +89,4 @@ class PhotoCanvas extends JComponent {
 
     gcan.drawImage(bufferedImage, 0, 0, null)
   }
-
 }

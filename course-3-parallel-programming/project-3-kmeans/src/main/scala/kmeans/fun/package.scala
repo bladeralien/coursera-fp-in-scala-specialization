@@ -1,9 +1,6 @@
 package kmeans
 
-import common._
-
 package object fun {
-
   /** The value of every pixel is represented as a 32 bit integer. */
   type RGBA = Int
 
