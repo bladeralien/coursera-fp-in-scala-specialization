@@ -1,9 +1,5 @@
 package barneshut
 
-import java.awt._
-import java.awt.event._
-import javax.swing._
-import javax.swing.event._
 import scala.collection.parallel.{TaskSupport, defaultTaskSupport}
 
 class SimulationModel {
@@ -68,5 +64,4 @@ class SimulationModel {
     screen.maxX = 350.0f
     screen.maxY = 350.0f
   }
-
 }

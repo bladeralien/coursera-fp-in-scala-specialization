@@ -4,10 +4,6 @@ import java.awt._
 import java.awt.event._
 import javax.swing._
 import javax.swing.event._
-import scala.collection.parallel._
-import scala.collection.par._
-import scala.collection.mutable.ArrayBuffer
-import scala.reflect.ClassTag
 
 object BarnesHut {
 
@@ -148,5 +144,4 @@ object BarnesHut {
   def main(args: Array[String]) {
     frame.repaint()
   }
-
 }

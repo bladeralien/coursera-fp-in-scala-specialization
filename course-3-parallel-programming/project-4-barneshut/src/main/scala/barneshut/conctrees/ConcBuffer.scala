@@ -89,5 +89,4 @@ object ConcBufferRunner {
     run(4)
     run(8)
   }
-
 }

@@ -3,7 +3,6 @@ package barneshut
 import java.awt._
 import java.awt.event._
 import javax.swing._
-import javax.swing.event._
 
 class SimulationCanvas(val model: SimulationModel) extends JComponent {
 
@@ -142,5 +141,4 @@ class SimulationCanvas(val model: SimulationModel) extends JComponent {
       repaint()
     }
   })
-
 }

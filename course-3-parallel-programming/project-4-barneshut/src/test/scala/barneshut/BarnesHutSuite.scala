@@ -1,21 +1,18 @@
 package barneshut
 
-import java.util.concurrent._
-import scala.collection._
-import org.scalatest.FunSuite
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import common._
+import scala.collection._
 import scala.math._
-import scala.collection.parallel._
-import barneshut.conctrees.ConcBuffer
 
 @RunWith(classOf[JUnitRunner])
 class BarnesHutSuite extends FunSuite {
 
   // test cases for quad tree
 
-import FloatOps._
+  import FloatOps._
+
   test("Empty: center of mass should be the center of the cell") {
     val quad = Empty(51f, 46.3f, 5f)
     assert(quad.massX == 51f, s"${quad.massX} should be 51f")
@@ -42,7 +39,6 @@ import FloatOps._
     assert(quad.total == 1, s"${quad.total} should be 1")
   }
 
-
   test("Fork with 3 empty quadrants and 1 leaf (nw)") {
     val b = new Body(123f, 18f, 26f, 0f, 0f)
     val nw = Leaf(17.5f, 27.5f, 5f, Seq(b))
@@ -57,6 +53,21 @@ import FloatOps._
     assert(quad.massX ~= 18f, s"${quad.massX} should be 18f")
     assert(quad.massY ~= 26f, s"${quad.massY} should be 26f")
     assert(quad.total == 1, s"${quad.total} should be 1")
+  }
+
+  test("Fork with 4 empty quadrants") {
+    val nw = Empty(17.5f, 27.5f, 5f)
+    val ne = Empty(22.5f, 27.5f, 5f)
+    val sw = Empty(17.5f, 32.5f, 5f)
+    val se = Empty(22.5f, 32.5f, 5f)
+    val quad = Fork(nw, ne, sw, se)
+
+    assert(quad.centerX == 20f, s"${quad.centerX} should be 20f")
+    assert(quad.centerY == 30f, s"${quad.centerY} should be 30f")
+    assert(quad.mass ~= 0f, s"${quad.mass} should be 0f")
+    assert(quad.massX ~= 20f, s"${quad.massX} should be 20f")
+    assert(quad.massY ~= 30f, s"${quad.massY} should be 30f")
+    assert(quad.total == 0, s"${quad.total} should be 0")
   }
 
   test("Empty.insert(b) should return a Leaf with only that body") {
@@ -111,7 +122,6 @@ import FloatOps._
     val res = sm(2, 3).size == 1 && sm(2, 3).find(_ == body).isDefined
     assert(res, s"Body not found in the right sector")
   }
-
 }
 
 object FloatOps {
@@ -138,4 +148,3 @@ object FloatOps {
         }
   }
 }
-

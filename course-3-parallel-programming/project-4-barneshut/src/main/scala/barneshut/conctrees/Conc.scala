@@ -135,5 +135,4 @@ object Conc {
     case _ =>
       sys.error("All cases should have been covered: " + xs + ", " + xs.getClass)
   }
-
 }
