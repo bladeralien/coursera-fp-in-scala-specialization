@@ -1,7 +1,6 @@
 package example
 
 import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
@@ -39,7 +38,6 @@ import org.scalatest.junit.JUnitRunner
    */
   test("one plus one is two")(assert(1 + 1 == 2))
 
-
   /**
    * In Scala, it is allowed to pass an argument to a method using the block
    * syntax, i.e. `{ argument }` instead of parentheses `(argument)`.
@@ -47,9 +45,8 @@ import org.scalatest.junit.JUnitRunner
    * This allows tests to be written in a more readable manner:
    */
   test("one plus one is three?") {
-    assert(1 + 1 == 3) // This assertion fails! Go ahead and fix it.
+    assert(1 + 1 == 2) // This assertion fails! Go ahead and fix it.
   }
-
 
   /**
    * One problem with the previous (failing) test is that ScalaTest will
@@ -72,7 +69,7 @@ import org.scalatest.junit.JUnitRunner
    * We recommend to always use the `===` equality operator when writing tests.
    */
   test("details why one plus one is not three") {
-    assert(1 + 1 === 3) // Fix me, please!
+    assert(1 + 1 === 2) // Fix me, please!
   }
 
   /**
@@ -93,14 +90,12 @@ import org.scalatest.junit.JUnitRunner
     else x
   }
 
-
   /**
    * Now we finally write some tests for the list functions that have to be
    * implemented for this assignment. We fist import all members of the
    * `List` object.
    */
   import Lists._
-
 
   /**
    * We only provide two very basic tests for you. Write more tests to make
@@ -120,7 +115,4 @@ import org.scalatest.junit.JUnitRunner
   test("max of a few numbers") {
     assert(max(List(3, 7, 2)) === 7)
   }
-
-
-
 }
